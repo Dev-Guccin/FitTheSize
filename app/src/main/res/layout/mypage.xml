@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent" android:background="#FFFFFF">
+
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:id="@+id/mypage_top"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:text="자기 정보 입력"
+            >
+        </TextView>
+
+        <EditText android:layout_height="60dp"
+            android:layout_width="300dp"
+            android:id="@+id/user_length"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:hint="총장 입력"
+            android:layout_below="@+id/mypage_top"/>
+
+        <EditText android:layout_height="60dp"
+            android:layout_width="300dp"
+            android:id="@+id/user_waist"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="허리 수치 입력"
+            android:layout_below="@+id/user_length"/>
+
+        <EditText android:layout_height="60dp"
+            android:layout_width="300dp"
+            android:id="@+id/user_thigh"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="허벅지 단면 입력"
+            android:layout_below="@+id/user_waist"/>
+
+        <EditText android:layout_height="60dp"
+            android:layout_width="300dp"
+            android:id="@+id/user_rise"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="밑위 입력"
+            android:layout_below="@+id/user_thigh"/>
+
+        <EditText android:layout_height="60dp"
+            android:layout_width="300dp"
+            android:id="@+id/user_hem"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="밑단 단면"
+            android:layout_below="@+id/user_rise"/>
+
+        <Button android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/save_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/user_hem"
+            android:textSize="15sp"
+            android:text="저장하기" />
+
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>
