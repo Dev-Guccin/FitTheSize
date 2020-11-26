@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mypagemain"
+    tool:context="gachon.example.fitthesize.mypage">
 
-    <RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent" android:background="#FFFFFF">
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="#FFFFFF"    >
 
 
         <TextView
@@ -64,6 +71,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:layout_below="@id/user_hem"
+            android:onClick="onClickBack"
             android:textSize="15sp"
             android:text="저장하기" />
 
