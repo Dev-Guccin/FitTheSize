@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
 
     <RelativeLayout
@@ -18,9 +18,8 @@
             android:id="@+id/gomypage"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:text="My"
-            android:onClick="onClicknew1">
-        </Button>
+            android:onClick="onClicknew1"
+            android:text="My"></Button>
 
 
         <TextView
@@ -29,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="FIT THE SIZE" />
+            android:text="FIT THE SIZE"
+            android:textColor="#101010"
+            android:textStyle="bold|italic" />
     </RelativeLayout>
 
     <LinearLayout
@@ -59,20 +60,23 @@
             android:id="@+id/EditText01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="사이즈 입력"></EditText>
+            android:hint="사이즈 입력"
+            android:textColor="#605E5E"
+            android:textColorHint="#4A4848"></EditText>
 
         <TextView
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:text="cm"></TextView>
+            android:text="cm"
+            android:textColor="#000000"></TextView>
 
         <Button
             android:id="@+id/gosearchA"
             android:layout_width="54dp"
             android:layout_height="wrap_content"
+            android:onClick="onClicknew2"
             android:text="검색"
-            android:textSize="15dp"
-            android:onClick="onClicknew2"/>
+            android:textSize="15dp" />
     </LinearLayout>
 
 
