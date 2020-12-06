@@ -31,6 +31,13 @@
             android:text="FIT THE SIZE"
             android:textColor="#101010"
             android:textStyle="bold|italic" />
+
+        <Button
+            android:id="@+id/gosearchB"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:text="AI"></Button>
     </RelativeLayout>
 
     <LinearLayout
@@ -101,6 +108,14 @@
             android:scrollbars="vertical"/>
 
     </LinearLayout>
-
+    <GridView
+        android:id="@+id/gridView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="100dp"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"
+        android:numColumns="auto_fit" >
+    </GridView>
 
 </LinearLayout>
