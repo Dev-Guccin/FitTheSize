@@ -49,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
 
     String pantsPart;
+    String genderPart;
     EditText pantsSizeTextview;
     TextView resultTextview;
     Spinner pantsPartSpinner;
+    Spinner genderPartSpinner;
     Button btn_search;
     Button btn_AI_search;
 
@@ -65,8 +67,27 @@ public class MainActivity extends AppCompatActivity {
         resultTextview = (TextView)findViewById(R.id.searchResult);
         resultTextview.setMovementMethod(new ScrollingMovementMethod());
         pantsPartSpinner =  (Spinner)findViewById(R.id.pantsPart);
+        genderPartSpinner = (Spinner)findViewById(R.id.genderPart);
         btn_search = (Button)findViewById(R.id.gosearchA);
         btn_AI_search = (Button)findViewById(R.id.gosearchB);
+
+        // 성별 선택 Spinner
+        genderPartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                genderPart = (String) parent.getItemAtPosition(position);
+
+                if(genderPart.equals("남자"))
+                    genderPart = "m";
+                else
+                    genderPart = "f";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         // 옷 부위 선택 spinner
         pantsPartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -98,14 +119,17 @@ public class MainActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://192.168.219.103:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString());
+                // local
+                //new JSONTask().execute("http://192.168.219.103:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString());
+                // aws server
+                new JSONTask().execute("http://54.209.118.235:80/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+genderPart);
             }
         });
         btn_AI_search.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
              //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
-                new JSONTask().execute("http://192.168.219.103:3001/"+"test");
+             new JSONTask().execute("http://192.168.219.103:3001/"+"test");
             }
         });
     }
@@ -218,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
 class MyAdapter extends BaseAdapter {
     Context context;
     int layout;

@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/linearLayout">
 
         <Spinner
-            android:id="@+id/spinner01"
+            android:id="@+id/genderPart"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:entries="@array/ARRAY02" />
