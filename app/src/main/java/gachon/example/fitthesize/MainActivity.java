@@ -2,6 +2,8 @@ package gachon.example.fitthesize;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -30,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +40,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
-             new JSONTask().execute("http://192.168.219.103:3001/"+"test");
+             //new JSONTask().execute("http://192.168.219.103:3001/"+"test");
+             new JSONTask().execute("http://54.209.118.235:80/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+genderPart);
             }
         });
     }
@@ -183,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+
         /**
          * @param result
          * result로 결과 json 객체배열이 들어갑니다
@@ -213,25 +219,52 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Log.d("test1", jsonObj.getString("id"));
                     JsonList.add(jsonObj);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             Log.d("test2", JsonList.toString());
 
-            List<String> tmp = new ArrayList<>();
-            for (int i = 0; i < JsonList.size(); i++) // imgurl을 리스트네 옮겨준다.
-            {
-                try {
-                    tmp.add(JsonList.get(i).getString("img"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            //List<String> tmp = new ArrayList<>();
+            final List<Bitmap> bm = new ArrayList<>();
+
+            Thread t = new Thread() {
+                public void run() {
+                    URL url = null;
+                    URLConnection conn = null;
+                    for (int i = 0; i < JsonList.size(); i++) // img url을 리스트에 옮겨준다.
+                    {
+                        try {
+                            //tmp.add(JsonList.get(i).getString("img"));
+
+                            //이미지를 가져오기 위한 코드
+                            url = new URL("https:" + JsonList.get(i).getString("img"));
+                            conn = url.openConnection();
+                            conn.connect();
+                            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                            bm.add(BitmapFactory.decodeStream(bis));
+                            bis.close();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+            };
+            t.start();
+            try {
+                // 이미지를 가져오는 작업이 끝나야 메인 스레드가 작동되게,
+                // 이 부분이 없으면 밑의 GridView adapter 코드가 먼저 수행됩니다
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+
             MyAdapter adapter = new MyAdapter (
                     getApplicationContext(),
                     R.layout.row,       // GridView 항목의 레이아웃 row.xml
-                    tmp);    // 데이터
+                    bm);       // 이미지
+                    //tmp);    // 데이터
             GridView gv = (GridView)findViewById(R.id.gridView1);
             gv.setAdapter(adapter);  // 커스텀 아답타를 GridView 에 적용
         }
@@ -246,10 +279,11 @@ public class MainActivity extends AppCompatActivity {
 class MyAdapter extends BaseAdapter {
     Context context;
     int layout;
-    List<String> data;
+    //List<String> data;
+    List<Bitmap> data;
     LayoutInflater inf;
 
-    public MyAdapter(Context context, int layout, List<String> data) {
+    public MyAdapter(Context context, int layout, List<Bitmap> data) {
         this.context = context;
         this.layout = layout;
         this.data = data;
@@ -276,8 +310,11 @@ class MyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView==null)
             convertView = inf.inflate(layout, null);
-        Button iv = (Button)convertView.findViewById(R.id.testbtn);
-        iv.setText(data.get(position));
+        //Button iv = (Button)convertView.findViewById(R.id.testbtn);
+        //iv.setText(data.get(position));
+        ImageView iv = (ImageView)convertView.findViewById(R.id.testimg);
+        iv.setImageBitmap(data.get(position));
+
         return convertView;
     }
 }
