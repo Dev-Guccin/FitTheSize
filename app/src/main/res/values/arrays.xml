@@ -11,6 +11,13 @@
     <string-array name="ARRAY02">
         <item>남자</item>
         <item>여자</item>
+        <item>공용</item>
+    </string-array>
+
+    <string-array name="ARRAY03">
+        <item>상품평순</item>
+        <item>만족도순</item>
+        <item>낮은 가격순</item>
     </string-array>
 
 </resources>

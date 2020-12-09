@@ -54,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
     String pantsPart;
     String genderPart;
+    String order;
+
     EditText pantsSizeTextview;
-    TextView resultTextview;
+
     Spinner pantsPartSpinner;
     Spinner genderPartSpinner;
+    Spinner orderSpinner;
+
     Button btn_search;
     Button btn_AI_search;
 
@@ -68,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pantsSizeTextview= (EditText)findViewById(R.id.pantsSize);
-        resultTextview = (TextView)findViewById(R.id.searchResult);
-        resultTextview.setMovementMethod(new ScrollingMovementMethod());
+
         pantsPartSpinner =  (Spinner)findViewById(R.id.pantsPart);
         genderPartSpinner = (Spinner)findViewById(R.id.genderPart);
+        orderSpinner = (Spinner)findViewById(R.id.orderSpinner);
+
         btn_search = (Button)findViewById(R.id.gosearchA);
         btn_AI_search = (Button)findViewById(R.id.gosearchB);
 
@@ -83,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if(genderPart.equals("남자"))
                     genderPart = "m";
-                else
+                else if(order.equals("여자"))
                     genderPart = "f";
+                else
+                    genderPart = "a";
             }
 
             @Override
@@ -116,6 +123,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // 정렬 선택 Spinner
+        orderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                order = (String) parent.getItemAtPosition(position);
+
+                if(order.equals("상품평순"))
+                    order = "sales";
+                else if(order.equals("만족도순"))
+                    order = "popular";
+                else
+                    order = "price";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         // 검색 버튼 작동
         /**
          * 본인 PC IP 주소 입력
@@ -126,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 // local
                 //new JSONTask().execute("http://192.168.219.103:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString());
                 // aws server
-                new JSONTask().execute("http://54.209.118.235:80/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+genderPart);
+                new JSONTask().execute("http://192.168.35.113:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
             }
         });
         btn_AI_search.setOnClickListener(new View.OnClickListener(){
@@ -134,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
              //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
              //new JSONTask().execute("http://192.168.219.103:3001/"+"test");
-             new JSONTask().execute("http://54.209.118.235:80/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+genderPart);
+             new JSONTask().execute("192.168.35.113:3000/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
             }
         });
     }
@@ -198,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             // 일단은 메인화면에 json 결과가 표시되게 해두었습니다
-            //resultTextview.setText(result);
             // 가져온데이터를 형식에 맞추어 저장해야한다. 값은 리스트형태의 json형태.[{},{}]
             JSONArray jsonArr = null;
             try {

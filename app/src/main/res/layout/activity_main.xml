@@ -19,7 +19,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:onClick="onClicknew1"
-            android:text="My"></Button>
+            android:text="My"/>
 
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentRight="true"
-            android:text="AI"></Button>
+            android:text="AI"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -69,45 +69,36 @@
             android:layout_height="wrap_content"
             android:hint="사이즈 입력"
             android:textColor="#605E5E"
-            android:textColorHint="#4A4848"></EditText>
+            android:textColorHint="#4A4848"/>
 
         <TextView
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:text="cm"
-            android:textColor="#000000"></TextView>
-<!--결과 표시를 위해 검색 버튼 잠시 주석처리 해두었습니다 ㅠㅠ-->
-        <!-- 임시 버튼 -->
+            android:textColor="#000000"/>
+
         <Button
             android:id="@+id/gosearchA"
             android:layout_width="54dp"
             android:layout_height="wrap_content"
             android:text="검색"
             android:textSize="15dp" />
-        <!-- 원래 있던 버튼
-        <Button
-            android:id="@+id/gosearchA"
-            android:layout_width="54dp"
-            android:layout_height="wrap_content"
-            android:onClick="onClicknew2"
-            android:text="검색"
-            android:textSize="15dp" />
-            -->
+
     </LinearLayout>
 
-<!-- 일단 테스트용으로 결과를 메인에 띄우기 위해 생성한 임시 레이아웃 입니다 지우셔도 됩니다-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/searchResult"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+        <Spinner
+            android:id="@+id/orderSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:entries="@array/ARRAY03" />
 
     </LinearLayout>
+
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="match_parent"
