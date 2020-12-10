@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -48,6 +49,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.xml.transform.Result;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(genderPart.equals("남자"))
                     genderPart = "m";
-                else if(order.equals("여자"))
+                else if(genderPart.equals("여자"))
                     genderPart = "f";
                 else
                     genderPart = "a";
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 // local
                 //new JSONTask().execute("http://192.168.219.103:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString());
                 // aws server
-                new JSONTask().execute("http://192.168.35.113:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
+                new JSONTask().execute("http://54.209.118.235:80/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
             }
         });
         btn_AI_search.setOnClickListener(new View.OnClickListener(){
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
              //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
              //new JSONTask().execute("http://192.168.219.103:3001/"+"test");
-             new JSONTask().execute("192.168.35.113:3000/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
+             new JSONTask().execute("http://54.209.118.235:80/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
             }
         });
     }
@@ -244,16 +247,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 try {
-                    Log.d("test1", jsonObj.getString("id"));
+                    //Log.d("test1", jsonObj.getString("id"));
                     JsonList.add(jsonObj);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            Log.d("test2", JsonList.toString());
+            //Log.d("test2", JsonList.toString());
 
             //List<String> tmp = new ArrayList<>();
-            final List<Bitmap> bm = new ArrayList<>();
+            final List<pants_inf> pants_list = new ArrayList<>();
 
             Thread t = new Thread() {
                 public void run() {
@@ -269,7 +272,9 @@ public class MainActivity extends AppCompatActivity {
                             conn = url.openConnection();
                             conn.connect();
                             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                            bm.add(BitmapFactory.decodeStream(bis));
+                            //bm.add(BitmapFactory.decodeStream(bis));
+                            // 이미지(bmp)랑 id랑 한꺼번에 넣음
+                            pants_list.add(new pants_inf(BitmapFactory.decodeStream(bis), JsonList.get(i).getString("id")));
                             bis.close();
 
                         } catch (Exception e) {
@@ -290,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
             MyAdapter adapter = new MyAdapter (
                     getApplicationContext(),
                     R.layout.row,       // GridView 항목의 레이아웃 row.xml
-                    bm);       // 이미지
+                    pants_list);          // 바지(Bitmap(이미지) + id) 리스트
                     //tmp);    // 데이터
             GridView gv = (GridView)findViewById(R.id.gridView1);
             gv.setAdapter(adapter);  // 커스텀 아답타를 GridView 에 적용
@@ -303,14 +308,24 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+class pants_inf{
+    Bitmap bmp;
+    String id;
+
+    public pants_inf(Bitmap bmp, String id) {
+        this.bmp = bmp;
+        this.id = id;
+    }
+}
+
 class MyAdapter extends BaseAdapter {
     Context context;
     int layout;
     //List<String> data;
-    List<Bitmap> data;
+    List<pants_inf> data;
     LayoutInflater inf;
 
-    public MyAdapter(Context context, int layout, List<Bitmap> data) {
+    public MyAdapter(Context context, int layout, List<pants_inf> data) {
         this.context = context;
         this.layout = layout;
         this.data = data;
@@ -334,13 +349,21 @@ class MyAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView==null)
             convertView = inf.inflate(layout, null);
         //Button iv = (Button)convertView.findViewById(R.id.testbtn);
         //iv.setText(data.get(position));
         ImageView iv = (ImageView)convertView.findViewById(R.id.testimg);
-        iv.setImageBitmap(data.get(position));
+        iv.setImageBitmap(data.get(position).bmp);
+
+        // 이미지 누르면 넘어가게 ~
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { context.startActivity( new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://store.musinsa.com/app/goods/"+data.get(position).id)).addFlags(FLAG_ACTIVITY_NEW_TASK));
+            }
+        });
 
         return convertView;
     }
