@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -59,6 +60,19 @@ public class MyAdapter extends BaseAdapter {
                     Uri.parse("https://store.musinsa.com/app/goods/"+data.get(position).id)).addFlags(FLAG_ACTIVITY_NEW_TASK));
             }
         });
+
+        Button btn = (Button)convertView.findViewById(R.id.testbtn);
+        if(data.get(position).category_group == "popular"){
+            btn.setText(data.get(position).order+"%");
+        } else if(data.get(position).category_group == "sales"){
+            btn.setText(data.get(position).order+"리뷰");
+        }
+        else{
+            btn.setText(data.get(position).order+"원");
+        }
+
+        Button btn1 = (Button)convertView.findViewById(R.id.testbtn1);
+        btn1.setText(data.get(position).category);
 
         return convertView;
     }

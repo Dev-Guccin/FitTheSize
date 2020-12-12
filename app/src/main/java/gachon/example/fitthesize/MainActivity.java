@@ -303,7 +303,11 @@ public class MainActivity extends AppCompatActivity {
                             BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
                             //bm.add(BitmapFactory.decodeStream(bis));
                             // 이미지(bmp)랑 id랑 한꺼번에 넣음
-                            pants_list.add(new pants_inf(BitmapFactory.decodeStream(bis), JsonList.get(i).getString("id")));
+                            pants_list.add(new pants_inf(BitmapFactory.decodeStream(bis),
+                                    JsonList.get(i).getString("id"),
+                                    JsonList.get(i).getString(order),
+                                    JsonList.get(i).getString("category"),
+                                    order));
                             bis.close();
 
                         } catch (Exception e) {

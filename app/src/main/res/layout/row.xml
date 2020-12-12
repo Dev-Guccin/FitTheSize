@@ -1,19 +1,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:id="@+id/testimg"/>
+            android:id="@+id/testimg">
+        </ImageView>
+
+
+
 
         <Button
             android:id="@+id/testbtn"
-            android:layout_width="113dp"
+            android:layout_width="130dp"
             android:layout_height="40dp"
-            android:background="@drawable/button_s1"
+            android:background="@drawable/button_s2"
+            android:text="test"
+            android:textColor="	#FFFFE0"/>
+
+        <Button
+            android:id="@+id/testbtn1"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_s2"
             android:text="test"
             android:textColor="	#FFFFE0"/>
 
