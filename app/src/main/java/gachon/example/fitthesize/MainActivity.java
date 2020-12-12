@@ -52,6 +52,8 @@ import javax.xml.transform.Result;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MainActivity extends AppCompatActivity {
+    private Context mContext;
+
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
 
@@ -85,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
+
         // 단일검색 사이즈 입력
         pantsSizeTextview= (EditText)findViewById(R.id.pantsSize);
         // spinner
@@ -115,29 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 옷 부위 선택 spinner
-        pantsPartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                pantsPart = (String) parent.getItemAtPosition(position);
 
-                if (pantsPart.equals("총장"))
-                    pantsPart="length";
-                else if (pantsPart.equals("허리단면"))
-                    pantsPart="waist";
-                else if (pantsPart.equals("허벅지 단면"))
-                    pantsPart="thigh";
-                else if (pantsPart.equals("밑위"))
-                    pantsPart="rise";
-                else if (pantsPart.equals("밑단 단면"))
-                    pantsPart="hem";
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         // 정렬 선택 Spinner
         orderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -182,6 +164,32 @@ public class MainActivity extends AppCompatActivity {
         saved_thigh = PreferenceManager.getString(this,"thigh");
         saved_rise = PreferenceManager.getString(this,"rise");
         saved_hem = PreferenceManager.getString(this,"hem");
+
+        // 옷 부위 선택 spinner
+        pantsPartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                pantsPart = (String) parent.getItemAtPosition(position);
+
+                if (pantsPart.equals("총장"))
+                    pantsPart="length";
+                else if (pantsPart.equals("허리단면"))
+                    pantsPart="waist";
+                else if (pantsPart.equals("허벅지 단면"))
+                    pantsPart="thigh";
+                else if (pantsPart.equals("밑위"))
+                    pantsPart="rise";
+                else if (pantsPart.equals("밑단 단면"))
+                    pantsPart="hem";
+
+                pantsSizeTextview.setText(PreferenceManager.getString(mContext,pantsPart));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         btn_AI_search.setOnClickListener(new View.OnClickListener(){
             @Override
