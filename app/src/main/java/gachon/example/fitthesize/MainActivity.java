@@ -55,18 +55,29 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
 
+    // get API에 사용될 문자열
     String pantsPart;
     String genderPart;
     String order;
 
+    // 단일검색 사이즈 입력
     EditText pantsSizeTextview;
 
+    // 선택(spinner)
     Spinner pantsPartSpinner;
     Spinner genderPartSpinner;
     Spinner orderSpinner;
 
+    //검색 버튼
     Button btn_search;
     Button btn_AI_search;
+
+    // AI 검색 사이즈
+    String saved_length;
+    String saved_waist;
+    String saved_thigh;
+    String saved_rise;
+    String saved_hem;
 
     List<JSONObject> JsonList = new ArrayList<>();
     @Override
@@ -74,12 +85,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 단일검색 사이즈 입력
         pantsSizeTextview= (EditText)findViewById(R.id.pantsSize);
-
+        // spinner
         pantsPartSpinner =  (Spinner)findViewById(R.id.pantsPart);
         genderPartSpinner = (Spinner)findViewById(R.id.genderPart);
         orderSpinner = (Spinner)findViewById(R.id.orderSpinner);
-
+        // 검색버튼
         btn_search = (Button)findViewById(R.id.gosearchA);
         btn_AI_search = (Button)findViewById(R.id.gosearchB);
 
@@ -154,22 +166,31 @@ public class MainActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // local
-                //new JSONTask().execute("http://192.168.219.103:3000/"+pantsPart+"/"+pantsSizeTextview.getText().toString());
                 // aws server
                 new JSONTask().execute("http://54.209.118.235:80/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // AI 검색 사이즈
+        saved_length = PreferenceManager.getString(this,"length");
+        saved_waist = PreferenceManager.getString(this,"waist");
+        saved_thigh = PreferenceManager.getString(this,"thigh");
+        saved_rise = PreferenceManager.getString(this,"rise");
+        saved_hem = PreferenceManager.getString(this,"hem");
+
         btn_AI_search.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-             //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
-             //new JSONTask().execute("http://192.168.219.103:3001/"+"test");
-             new JSONTask().execute("http://54.209.118.235:80/mysize/"+pantsPart+"/"+pantsSizeTextview.getText().toString()+"/"+order+"/"+genderPart);
+                //인공지능 요청을 보냄. 이때 사용하는 값은 사용자가 입력한 데이터
+                new JSONTask().execute("http://54.209.118.235:80/mysize/"+saved_length+"/"+saved_waist+"/"+saved_thigh+"/"+saved_rise+"/"+saved_hem+"/"+order+"/"+genderPart);
             }
         });
     }
-
     // 서버 통신부
    public class JSONTask extends AsyncTask<String, String, String>{
         @Override
@@ -307,68 +328,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-class pants_inf{
-    Bitmap bmp;
-    String id;
-
-    public pants_inf(Bitmap bmp, String id) {
-        this.bmp = bmp;
-        this.id = id;
-    }
-}
-
-class MyAdapter extends BaseAdapter {
-    Context context;
-    int layout;
-    //List<String> data;
-    List<pants_inf> data;
-    LayoutInflater inf;
-
-    public MyAdapter(Context context, int layout, List<pants_inf> data) {
-        this.context = context;
-        this.layout = layout;
-        this.data = data;
-        inf = (LayoutInflater) context.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return data.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView==null)
-            convertView = inf.inflate(layout, null);
-        //Button iv = (Button)convertView.findViewById(R.id.testbtn);
-        //iv.setText(data.get(position));
-        ImageView iv = (ImageView)convertView.findViewById(R.id.testimg);
-        iv.setImageBitmap(data.get(position).bmp);
-
-        // 이미지 누르면 넘어가게 ~
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { context.startActivity( new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://store.musinsa.com/app/goods/"+data.get(position).id)).addFlags(FLAG_ACTIVITY_NEW_TASK));
-            }
-        });
-
-        return convertView;
-    }
-}
-
 
 
 

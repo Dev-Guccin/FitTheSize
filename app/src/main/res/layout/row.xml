@@ -1,19 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-        <!-- layout_height="match_parent" 를 "150dp"로 수정하였습니다" -->
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:id="@+id/testimg">
-        </ImageView>
-        <!-- 이미지 출력을 위해서 임시로 주석처리하였습니다
+            android:id="@+id/testimg"/>
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/testbtn"
+            android:layout_width="113dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_s1"
             android:text="test"
-            android:id="@+id/testbtn">
-        </Button>-->
+            android:textColor="	#FFFFE0"/>
+
+
 </LinearLayout>

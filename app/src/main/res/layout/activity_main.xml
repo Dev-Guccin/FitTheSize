@@ -16,10 +16,12 @@
 
         <Button
             android:id="@+id/gomypage"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="61dp"
+            android:layout_height="40dp"
             android:onClick="onClicknew1"
-            android:text="My"/>
+            android:textColor="#F0FFFF"
+            android:background="@drawable/button_s1"
+            android:text="My" />
 
 
         <TextView
@@ -36,6 +38,8 @@
             android:id="@+id/gosearchB"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:textColor="#F0FFFF"
+            android:background="@drawable/button_s1"
             android:layout_alignParentRight="true"
             android:text="AI"/>
     </RelativeLayout>
@@ -79,8 +83,10 @@
 
         <Button
             android:id="@+id/gosearchA"
-            android:layout_width="54dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#F0FFFF"
+            android:background="@drawable/button_s1"
             android:text="검색"
             android:textSize="15dp" />
 
